@@ -10,23 +10,16 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SynchronizedCounter {
     private int counter;
     private AtomicLong atomicLongCounter = new AtomicLong();
-    private Long atomicIncrTime;
-    private Long atomicDecrTime;
-    private Long syncIncrTime;
-    private Long syncDecrTime;
 
     public static final Object obj = new Object();
 
     public Thread getIncrementatorThread() {
         Thread incrementatorThread = new Thread(() -> {
-            Long start = System.currentTimeMillis();
             for (int i = 0; i < 1000000; i++) {
                 synchronized (obj) {
                     counter++;
                 }
             }
-            Long end = System.currentTimeMillis();
-            syncIncrTime = end - start;
         }
         );
         return incrementatorThread;
@@ -34,14 +27,11 @@ public class SynchronizedCounter {
 
     public Thread getDecrementatorThread() {
         Thread decrementatorThread = new Thread(() -> {
-            Long start = System.currentTimeMillis();
             for (int i = 0; i < 1000000; i++) {
                 synchronized (obj) {
                     counter--;
                 }
             }
-            Long end = System.currentTimeMillis();
-            syncDecrTime = end - start ;
         }
         );
         return decrementatorThread;
@@ -49,12 +39,9 @@ public class SynchronizedCounter {
 
     public Thread getAtomicDecrementatorThread() {
         Thread decrementatorThread = new Thread(() -> {
-            Long start = System.currentTimeMillis();
             for (int i = 0; i < 1000000; i++) {
                 atomicLongCounter.decrementAndGet();
             }
-            Long end = System.currentTimeMillis();
-            atomicDecrTime = end - start;
         }
         );
         return decrementatorThread;
@@ -62,12 +49,9 @@ public class SynchronizedCounter {
 
     public Thread getAtomicIncrementatorThread() {
         Thread incrementatorThread = new Thread(() -> {
-            Long start = System.currentTimeMillis();
             for (int i = 0; i < 1000000; i++) {
                 atomicLongCounter.incrementAndGet();
             }
-            Long end = System.currentTimeMillis();
-            atomicIncrTime = end - start;
         }
         );
         return incrementatorThread;
@@ -80,12 +64,44 @@ public class SynchronizedCounter {
     public AtomicLong getAtomicLongCounter() {
         return atomicLongCounter;
     }
+    public  void countWithAtomic() {
 
-    public Long getSyncCounterTime() {
-        return syncIncrTime + syncDecrTime;
+        long start = System.currentTimeMillis();
+        getAtomicIncrementatorThread().start();
+        getAtomicDecrementatorThread().start();
+
+        try {
+            getAtomicIncrementatorThread().join();
+            getAtomicDecrementatorThread().join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        long end = System.currentTimeMillis();
+try {
+    Thread.sleep(100);
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+        System.out.println("AtomicLong counter : " + getAtomicLongCounter() + " time : " + (end - start));
     }
 
-    public Long getAtomicCounterTime() {
-        return atomicIncrTime + atomicDecrTime;
+    public  void countWithSync() {
+        long start = System.currentTimeMillis();
+        getIncrementatorThread().start();
+        getDecrementatorThread().start();
+        try {
+            getIncrementatorThread().join();
+            getDecrementatorThread().join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        long end = System.currentTimeMillis();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Sync counter : " + getCounter() + " time : " + (end - start));
     }
+
 }

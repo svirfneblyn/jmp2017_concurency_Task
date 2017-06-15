@@ -13,7 +13,7 @@ public class ConcurrencyApplication {
 
     public static void main(String[] args) {
 
-        Thread notifier = new Thread() {
+       /* Thread notifier = new Thread() {
             @Override
             public void run() {
                 while (true) {
@@ -29,7 +29,7 @@ public class ConcurrencyApplication {
                     }
                 }
             }
-        };
+        };*/
         Thread aThread = new Thread() {
             @Override
             public void run() {
@@ -75,7 +75,6 @@ public class ConcurrencyApplication {
         };
         aThread.start();
         bThread.start();
-        notifier.start();
 
     }
 

@@ -5,7 +5,4 @@ package counter;
  */
 public class CounterHolder {
     public static int counter = 0;
-
-    public CounterHolder() {
-    }
 }
