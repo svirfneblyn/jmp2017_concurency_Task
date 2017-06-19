@@ -60,7 +60,7 @@ public class MapsAndThreadsAnalizer {
     public Thread getHashMapSyncKeySumatorThread() {
         Thread fillHashMap = new Thread(() -> {
 
-            getHashMapConcurent().forEach((k, v) -> multiSummator(k, "s"));
+            getHashMapSync().forEach((k, v) -> multiSummator(k, "s"));
         }
         );
         return fillHashMap;
@@ -69,7 +69,7 @@ public class MapsAndThreadsAnalizer {
     public Thread getHashMapKeySumatorThread() {
         Thread fillHashMap = new Thread(() -> {
 
-            getHashMapConcurent().forEach((k, v) -> multiSummator(k, "h"));
+            getHashMap().forEach((k, v) -> multiSummator(k, "h"));
         }
         );
         return fillHashMap;
