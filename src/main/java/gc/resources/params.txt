@@ -1,0 +1,28 @@
+#-Xloggc:gcc.log
+#-XX:+PrintGCDetails
+
+
+
+
+-XX:+UseSerialGC	 
+-XX:+UseParallelGC
+-XX:ParallelGCThreads=value	 
+Parallel Compacting GC	-XX:+UseParallelOldGC	 
+CMS GC	-XX:+UseConcMarkSweepGC
+-XX:+UseParNewGC
+-XX:+CMSParallelRemarkEnabled
+-XX:CMSInitiatingOccupancyFraction=value
+-XX:+UseCMSInitiatingOccupancyOnly	 
+G1	-XX:+UnlockExperimentalVMOptions
+-XX:+UseG1GC	
+
+
+
+=====================================
+-XX:+UseSerialGC
+-XX:+PrintGCDetails
+-XX:+PrintGCApplicationStoppedTime
+-XX:+PrintGCApplicationConcurrentTime
+-XX:+UnlockDiagnosticVMOptions
+-XX:+LogVMOutput
+-XX:LogFile=d:\gc.log
