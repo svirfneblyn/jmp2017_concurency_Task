@@ -15,5 +15,6 @@ import java.math.BigDecimal;
 public class LinkedEntity {
     private Long id;
     private String name;
-    private Long previousId;
+    private Long linkedEntityId;
+    private LinkedEntity perviousEntity;
 }

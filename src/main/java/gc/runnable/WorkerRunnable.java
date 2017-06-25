@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Ihar_Rubanovich.
  */
 public class WorkerRunnable implements Runnable {
-    private static LinkedEntity linkedEntity;
+    private static LinkedEntity linkedEntity = new LinkedEntity();
     private LinkedEntityCreator creator;
     private static Map<String, LinkedEntity> linkedEntityMap = new ConcurrentHashMap<>();
 
@@ -23,11 +23,9 @@ public class WorkerRunnable implements Runnable {
 
     @Override
     public void run() {
-        Long previousId = 0L;
 
         for (int i = 0; i < 100000000; i++) {
-            linkedEntity = creator.getEntity(previousId);
-            previousId = linkedEntity.getId();
+            linkedEntity = creator.getEntity(linkedEntity);
             linkedEntityMap.put(linkedEntity.getName(), linkedEntity);
         }
         System.out.println("job done. Created map with " + linkedEntityMap.size() + " entities");
